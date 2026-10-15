@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>الحي اللاتيني - سهيل إدريس</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@700&family=Tajawal:wght@800;900&display=swap" rel="stylesheet">
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+body{background:#020812;color:#fff;font-family:'Tajawal',sans-serif;overflow:hidden;height:100vh;position:relative}
+
+/* === الخلفية المتحركة الجديدة === */
+.bg-animated{
+  position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;
+  background: linear-gradient(125deg, #020812, #051a33, #082a4a, #001a33, #020812);
+  background-size: 400% 400%;
+  animation: gradientMove 15s ease infinite;
+}
+@keyframes gradientMove{0%{background-position:0% 50%}50%{background-position:100% 50%}100%{background-position:0% 50%}}
+.blob{position:fixed;border-radius:50%;filter:blur(80px);opacity:0.5;z-index:1;animation: floatBlob 20s ease-in-out infinite;}
+.blob1{width:600px;height:600px;background:radial-gradient(circle, rgba(0,170,255,0.4), transparent);top:-100px;left:-150px;animation-duration:18s}
+.blob2{width:500px;height:500px;background:radial-gradient(circle, rgba(0,255,170,0.25), transparent);bottom:-80px;right:-100px;animation-duration:22s;animation-delay:-5s}
+.blob3{width:700px;height:700px;background:radial-gradient(circle, rgba(100,0,255,0.2), transparent);top:40%;left:30%;animation-duration:25s;animation-delay:-10s}
+@keyframes floatBlob{0%,100%{transform:translate(0,0) scale(1)}25%{transform:translate(80px,-50px) scale(1.1)}50%{transform:translate(-40px,80px) scale(0.9)}75%{transform:translate(-80px,-30px) scale(1.05)}}
+
+canvas#particles{position:fixed;top:0;left:0;width:100%;height:100%;z-index:2}
+.progress{position:fixed;top:0;left:0;height:4px;background:linear-gradient(90deg,#00aaff,#00ffaa);box-shadow:0 0 15px #00aaff;z-index:10;transition:0.5s}
+.container{position:relative;z-index:3;width:100%;height:100vh;display:flex;align-items:center;justify-content:center;padding-bottom:90px}
+.slide{display:none;width:96%;max-width:920px;max-height:86vh;overflow-y:auto;background:rgba(5,25,55,0.78);border:1px solid rgba(0,170,255,0.6);border-radius:18px;padding:30px 28px;backdrop-filter:blur(16px);box-shadow:0 0 40px rgba(0,170,255,0.3), inset 0 0 20px rgba(0,170,255,0.1);text-align:center;animation:slideIn 0.6s ease}
+.slide.active{display:block}
+.slide h2{font-family:'Amiri',serif;font-size:2.2rem;color:#00aaff;text-shadow:0 0 15px #00aaff}
+.slide p.main-text{font-size:1.18rem;line-height:2.1;color:#cceeff;text-align:justify;margin:12px 0 18px 0}
+.neon-line{width:130px;height:3px;background:linear-gradient(90deg,#00aaff,#00ffaa);box-shadow:0 0 15px #00aaff,0 0 30px #00aaff;margin:10px auto 18px auto;border-radius:10px;animation:neonPulse 1.5s infinite alternate}
+@keyframes neonPulse{0%{box-shadow:0 0 10px #00aaff}100%{box-shadow:0 0 25px #00aaff,0 0 50px #00aaff}}
+mark.hl{background:#ffcc00;color:#000;padding:2px 6px;border-radius:4px;box-shadow:0 0 10px #ffcc00}
+.faq-box{margin-top:15px;border-top:1px dashed rgba(0,170,255,0.4);padding-top:15px;text-align:right}
+.faq-title{font-size:1rem;color:#ffcc00;text-align:center;margin-bottom:12px}
+.faq-item{background:rgba(0,170,255,0.07);border:1px solid rgba(0,170,255,0.25);border-radius:10px;margin-bottom:10px;padding:12px 15px;opacity:0.5;transition:0.4s}
+.faq-item.active-q{opacity:1;border-color:#00aaff;background:rgba(0,170,255,0.12);transform:scale(1.02);box-shadow:0 0 15px rgba(0,170,255,0.3)}
+.faq-item.revealed{opacity:1;border-color:#ffcc00;box-shadow:0 0 12px rgba(255,204,0,0.3);background:rgba(255,204,0,0.08)}
+.faq-q{color:#fff;font-weight:800;font-size:1.02rem;margin-bottom:6px}
+.faq-a{color:#8ad8ff;font-size:1rem;line-height:1.9;text-align:justify;min-height:22px;border-right:3px solid transparent;padding-right:10px}
+.faq-a.typing{border-right-color:#ffcc00}
+.counter{font-size:0.9rem;color:#00aaff;text-align:center;margin-bottom:10px}
+.hint{font-size:0.9rem;color:#ffcc00;text-align:center;margin-top:12px;animation:blink 1s infinite}
+@keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
+.nav-bottom{position:fixed;bottom:25px;left:50%;transform:translateX(-50%);display:flex;gap:22px;z-index:5}
+.arrow-btn{width:64px;height:64px;border-radius:50%;background:rgba(0,170,255,0.15);border:2px solid #00aaff;color:#00aaff;font-size:2.4rem;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 0 20px rgba(0,170,255,0.5);transition:0.3s;backdrop-filter:blur(10px)}
+.arrow-btn.active-next{background:#ffcc00;color:#000;border-color:#ffcc00;box-shadow:0 0 25px #ffcc00;transform:scale(1.1);animation:btnPulse 1s infinite}
+@keyframes btnPulse{0%,100%{box-shadow:0 0 20px #ffcc00}50%{box-shadow:0 0 40px #ffcc00,0 0 60px #ffcc00}}
+@keyframes slideIn{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:translateY(0)}}
+</style>
+</head>
+<body>
+<div class="bg-animated"></div>
+<div class="blob blob1"></div>
+<div class="blob blob2"></div>
+<div class="blob blob3"></div>
+<canvas id="particles"></canvas>
+<div class="progress" id="progress"></div>
+<div class="container">
+  <div class="slide active" id="s1"><h1 style="font-family:'Amiri';font-size:3.5rem;text-shadow:0 0 25px #00aaff">الحي <span style="color:#00aaff">اللاتيني</span></h1><div class="neon-line"></div><p style="color:#00aaff;text-align:center">رواية سهيل إدريس</p><p class="main-text" style="text-align:center" id="t1"></p><div class="hint" id="hint1" style="display:none"></div></div>
+  <div class="slide" id="s2"><h2>المقدمة: الحي اللاتيني - وصف رواية سهيل إدريس</h2><div class="neon-line"></div><p class="main-text" id="t2"></p><div class="faq-box" id="faq2"></div><div class="hint" id="hint2" style="display:none"></div></div>
+  <div class="slide" id="s3"><h2>الوصف المادي - الحسي</h2><div class="neon-line"></div><p class="main-text" id="t3"></p><div class="faq-box" id="faq3"></div><div class="hint" id="hint3" style="display:none"></div></div>
+  <div class="slide" id="s4"><h2>الوصف المعنوي - الرمزي</h2><div class="neon-line"></div><p class="main-text" id="t4"></p><div class="faq-box" id="faq4"></div><div class="hint" id="hint4" style="display:none"></div></div>
+  <div class="slide" id="s5"><h2>الخاتمة</h2><div class="neon-line"></div><p class="main-text" id="t5" style="text-align:center"></p><div class="faq-box" id="faq5"></div><div class="hint" id="hint5" style="display:none"></div></div>
+  <div class="slide" id="s6"><h1 style="font-size:4rem;font-family:'Amiri';text-shadow:0 0 30px #00aaff"> شكرا على حسن استماعكم</h1><div class="neon-line"></div></div>
+</div>
+<div class="nav-bottom"><button class="arrow-btn" onclick="prev()">‹</button><button class="arrow-btn" id="nextBtn" onclick="handleNext()">›</button></div>
+<audio id="typeAudio"><source src="https://cdn.pixabay.com/audio/2022/03/24/audio_4a7c864d38.mp3"></audio>
+<script>
+const canvas=document.getElementById('particles'),ctx=canvas.getContext('2d');canvas.width=innerWidth;canvas.height=innerHeight;
+let particles=[];
+for(let i=0;i<110;i++)particles.push({
+  x:Math.random()*canvas.width,y:Math.random()*canvas.height,
+  vx:(Math.random()-0.5)*0.5,vy:(Math.random()-0.5)*0.5,
+  size:Math.random()*2+0.5,opacity:Math.random()*0.6+0.2,
+  color: Math.random()>0.5? '0,170,255' : '0,255,170'
+});
+function drawParticles(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  particles.forEach(p=>{
+    p.x+=p.vx;p.y+=p.vy;
+    if(p.x<0||p.x>canvas.width)p.vx*=-1;
+    if(p.y<0||p.y>canvas.height)p.vy*=-1;
+    ctx.shadowBlur=10;ctx.shadowColor=`rgba(${p.color},${p.opacity})`;
+    ctx.fillStyle=`rgba(${p.color},${p.opacity})`;
+    ctx.beginPath();ctx.arc(p.x,p.y,p.size,0,Math.PI*2);ctx.fill();
+    ctx.shadowBlur=0;
+    particles.forEach(p2=>{
+      const dx=p.x-p2.x,dy=p.y-p2.y,dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<110){
+        ctx.strokeStyle=`rgba(${p.color},${0.08*(1-dist/110)})`;
+        ctx.lineWidth=0.5;ctx.beginPath();ctx.moveTo(p.x,p.y);ctx.lineTo(p2.x,p2.y);ctx.stroke();
+      }
+    });
+  });
+  requestAnimationFrame(drawParticles);
+}
+drawParticles();
+window.addEventListener('resize',()=>{canvas.width=innerWidth;canvas.height=innerHeight});
+
+const typeSound=document.getElementById('typeAudio');typeSound.volume=0.35;
+function playType(){typeSound.currentTime=0;typeSound.play().catch(()=>{});}
+function typeWriter(el,text,speed=32){return new Promise(r=>{let i=0;el.textContent='';el.classList.add('typing');const int=setInterval(()=>{el.textContent+=text[i]||'';if(text[i]?.trim())playType();i++;if(i>=text.length){clearInterval(int);el.classList.remove('typing');r();}},speed);});}
+
+const data={
+t1:"أهلاً وسهلاً بأستاذي الكريم وزملائي الأعزاء، أقدم لكم اليوم عرضي حول وصف الحي اللاتيني في رواية سهيل إدريس.",
+t2:"المقدمة: الحي اللاتيني - وصف رواية سهيل إدريس. رواية الحي اللاتيني هي رواية عربية شهيرة للكاتب اللبناني سهيل إدريس، نشرت سنة 1953، وتعتبر من أولى الروايات العربية التي تناولت موضوع الصراع الحضاري بين الشرق والغرب. تدور أحداث الرواية حول طالب عربي لبناني اسمه سامي، سافر من بيروت إلى باريس لدراسة الأدب في جامعة السوربون. استقر سامي في الحي اللاتيني، وهو قلب باريس الثقافي والطلابي، يقع في الضفة اليسرى لنهر السين حول جامعة السوربون العريقة التي تأسست في القرن الثالث عشر. سمي بالحي اللاتيني لأن الطلبة قديما كانوا يتحدثون اللغة اللاتينية كلغة للعلم. اختار الكاتب هذا الحي بالذات لأنه يمثل نقطة التقاء الحضارات، ومهد الثورات الفكرية.",
+t3:"من الناحية العمرانية، الحي اللاتيني هو حي قديم جدا، يتميز بأزقته الضيقة والمتعرجة المرصوفة بالحجارة القديمة، ومبانيه الحجرية العتيقة ذات الشرفات الحديدية. في الصباح الباكر، يمتلئ الحي بحركة الطلاب المتجهين إلى الجامعة، وباعة الكتب القديمة الذين يعرضون كتبهم على ضفاف نهر السين. المقاهي الأدبية منتشرة في كل مكان، مثل مقهى سان ميشال، تفوح منها رائحة القهوة الساخنة والتبغ. هو حي بوهيمي يغلب عليه الفقر الطلابي الجميل، بارد في شتائه لكنه دافئ بعلاقاته الإنسانية.",
+t4:"من الناحية المعنوية، الحي اللاتيني ليس مجرد مكان، بل هو رمز للحرية الفكرية المطلقة، حيث لا رقابة على الفكر ولا حدود للنقاش. هو أيضا رمز للتحرر الاجتماعي والجنسي ويمثل الصدمة الحضارية للبطل العربي سامي القادم من مجتمع محافظ يفصل بين الجنسين. كما أنه رمز للمرأة المتحررة المستقلة المتعلمة من خلال شخصية جانين الفرنسية، التي تمثل النقيض الكامل للمرأة العربية التقليدية.",
+t5:"في النهاية، الحي اللاتيني ليس مجرد مكان جغرافي، بل هو مدرسة حقيقية يتصارع فيها الشرق والغرب داخل نفس البطل. هو المكان الذي تفتحت فيه عيناه على العالم. إنه حي يفكر دائما، ويحب دائما، ويشك دائما، ويبقى رمزا خالدا للبحث عن الذات والحرية."
+};
+
+const faqList={
+2:[
+{q:"ما هي رواية الحي اللاتيني؟",a:"رواية عربية شهيرة للكاتب اللبناني سهيل إدريس، نشرت سنة 1953",key:"رواية عربية شهيرة للكاتب اللبناني سهيل إدريس، نشرت سنة 1953"},
+{q:"من هو بطل الرواية؟",a:"طالب عربي لبناني اسمه سامي، سافر من بيروت إلى باريس لدراسة الأدب في جامعة السوربون",key:"طالب عربي لبناني اسمه سامي"},
+{q:"أين يقع الحي اللاتيني؟",a:"يقع في الضفة اليسرى لنهر السين حول جامعة السوربون العريقة",key:"في الضفة اليسرى لنهر السين حول جامعة السوربون"},
+{q:"لماذا سمي باللاتيني؟",a:"لأن الطلبة قديما كانوا يتحدثون اللغة اللاتينية كلغة للعلم",key:"كانوا يتحدثون اللغة اللاتينية كلغة للعلم"}
+],
+3:[
+{q:"كيف هي أزقة الحي؟",a:"أزقته الضيقة والمتعرجة المرصوفة بالحجارة القديمة",key:"أزقته الضيقة والمتعرجة المرصوفة بالحجارة القديمة"},
+{q:"بماذا يمتلئ الحي صباحا؟",a:"يمتلئ بحركة الطلاب وباعة الكتب القديمة على ضفاف نهر السين",key:"يمتلئ الحي بحركة الطلاب"},
+{q:"ما هو جو الحي؟",a:"حي بوهيمي يغلب عليه الفقر الطلابي الجميل",key:"حي بوهيمي يغلب عليه الفقر الطلابي الجميل"}
+],
+4:[
+{q:"ماذا يرمز الحي معنويا؟",a:"رمز للحرية الفكرية المطلقة، حيث لا رقابة على الفكر",key:"رمز للحرية الفكرية المطلقة"},
+{q:"ما هي الصدمة الحضارية؟",a:"يمثل الصدمة الحضارية للبطل العربي القادم من مجتمع محافظ",key:"الصدمة الحضارية للبطل العربي"},
+{q:"ماذا تمثل جانين؟",a:"رمز للمرأة المتحررة المستقلة المتعلمة",key:"رمز للمرأة المتحررة المستقلة المتعلمة"}
+],
+5:[
+{q:"ماذا يعني الحي في النهاية؟",a:"ليس مجرد مكان جغرافي، بل هو مدرسة حقيقية يتصارع فيها الشرق والغرب",key:"ليس مجرد مكان جغرافي، بل هو مدرسة حقيقية"},
+{q:"ما هي خلاصة الحي؟",a:"حي يفكر دائما، ويحب دائما، ويشك دائما",key:"يفكر دائما، ويحب دائما، ويشك دائما"}
+]
+};
+
+let cur=1,total=6,state={};
+function updateProg(){document.getElementById('progress').style.width=(cur/total*100)+'%'}
+
+async function show(n){
+ document.querySelectorAll('.slide').forEach(s=>s.classList.remove('active'));
+ document.getElementById('s'+n).classList.add('active');cur=n;updateProg();
+ if(!state[n]) state[n]={step:0,rawText:data['t'+n]||'',faqIndex:0,currentHTML:data['t'+n]||''};
+ const tEl=document.getElementById('t'+n);
+ if(tEl && data['t'+n]){
+   tEl.innerHTML=state[n].rawText;
+   await typeWriter(tEl,data['t'+n],32);
+   state[n].currentHTML=data['t'+n];
+ }
+ if(faqList[n]){
+   const box=document.getElementById('faq'+n);
+   box.innerHTML=`<div class="counter" id="counter-${n}">سؤال 0 / ${faqList[n].length}</div><div class="faq-title">📝 أسئلة من النص   </div>`;
+   faqList[n].forEach((it,i)=>{
+     const d=document.createElement('div');d.className='faq-item';d.id=`faq-${n}-${i}`;
+     d.innerHTML=`<div class="faq-q">❓ ${it.q}</div><div class="faq-a" id="ans-${n}-${i}"></div>`;
+     box.appendChild(d);
+   });
+   state[n].step=1; state[n].faqIndex=0;
+   document.getElementById('hint'+n).textContent=`⬇️ ${faqList[n].length} أسئلة - اضغط السهم › لتبين الجواب الأول`;document.getElementById('hint'+n).style.display='block';
+   document.getElementById('nextBtn').classList.add('active-next');
+   updateCounter(n);
+ } else { state[n].step=99; }
+}
+
+function updateCounter(n){
+ const c=document.getElementById(`counter-${n}`);
+ if(c) c.textContent=`سؤال ${state[n].faqIndex} / ${faqList[n].length} - باقي ${faqList[n].length - state[n].faqIndex}`;
+}
+
+async function handleNext(){
+ const s=state[cur];
+ if(!s){ if(cur<total) show(cur+1); return; }
+ if(s.step===1){
+   const i = s.faqIndex;
+   if(i < faqList[cur].length){
+     const ansEl=document.getElementById(`ans-${cur}-${i}`);
+     const itemDiv=document.getElementById(`faq-${cur}-${i}`);
+     itemDiv.classList.add('active-q');
+     await typeWriter(ansEl,faqList[cur][i].a,28);
+     itemDiv.classList.remove('active-q');
+     itemDiv.classList.add('revealed');
+     const tEl=document.getElementById('t'+cur);
+     const key = faqList[cur][i].key;
+     if(s.currentHTML.includes(key)){
+       s.currentHTML = s.currentHTML.replace(key, `<mark class="hl">${key}</mark>`);
+       tEl.innerHTML = s.currentHTML;
+     }
+     s.faqIndex++;
+     updateCounter(cur);
+     if(s.faqIndex < faqList[cur].length){
+       document.getElementById('hint'+cur).textContent=`✅ تم الجواب ${s.faqIndex} - اضغط السهم للسؤال الموالي (${s.faqIndex+1}/${faqList[cur].length}) ›`;
+       document.getElementById('nextBtn').classList.add('active-next');
+     } else {
+       document.getElementById('hint'+cur).textContent=`✅ كملتي جميع الأسئلة (${s.faqIndex}/${faqList[cur].length}) - اضغط السهم للصفحة القادمة ›`;
+       document.getElementById('nextBtn').classList.add('active-next');
+       s.step=2;
+     }
+     return;
+   }
+ }
+ if(s.step===2 || s.step===99){
+   if(cur<total) show(cur+1);
+ }
+}
+function prev(){if(cur>1) show(cur-1);}
+show(1);updateProg();
+</script>
+</body>
+  </html>
